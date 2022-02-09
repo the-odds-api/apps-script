@@ -1,7 +1,9 @@
 
-function main() {
+function getOdds() {
   /**
    * Get odds from the The Odds API and output the response to a spreadsheet.
+   * Using Apps Script triggers, code can be invoked as frequently as every minute by default.
+   * For more frequent updates, use this script along with the Apps Script minute trigger (see "Triggers" in the README).
    */
 
   const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/abc123/edit#gid=0' // Get this from your browser
@@ -14,19 +16,30 @@ function main() {
   const ODDS_FORMAT = 'american' // Valid values are american and decimal.
   const DATE_FORMAT = 'iso' // Valid values are unix and iso.
 
-  // Request the data from the API
-  const data = getOdds(API_KEY, SPORT_KEY, MARKETS, REGIONS, ODDS_FORMAT, DATE_FORMAT)
+  const UPDATES_PER_MINUTE = 12 // Update data this many times per minute. For example if this is 12, data will refresh approximately every 60 / 12 = 5 seconds
 
-  // Prepare the spreadsheet for the data output
-  // Note this clears any existing data on the spreadsheet
+  let data
   const ws = SpreadsheetApp.openByUrl(SPREADSHEET_URL).getSheetByName(SHEET_NAME)
-  ws.clearContents()
 
-  // Output meta data starting in row 1, column 1
-  ws.getRange(1, 1, data.metaData.length, data.metaData[0].length).setValues(data.metaData)
+  for (let x = 0; x < UPDATES_PER_MINUTE ; x++) {
 
-  // Output event data 2 rows below the meta data
-  ws.getRange(data.metaData.length + 2, 1, data.eventData.length, data.eventData[0].length).setValues(data.eventData)
+    // Request the data from the API
+    data = fetchOdds(API_KEY, SPORT_KEY, MARKETS, REGIONS, ODDS_FORMAT, DATE_FORMAT)
+
+    // Prepare the spreadsheet for the data output
+    // Note this clears any existing data on the spreadsheet
+    ws.clearContents()
+
+    // Output meta data starting in row 1, column 1
+    ws.getRange(1, 1, data.metaData.length, data.metaData[0].length).setValues(data.metaData)
+
+    // Output event data 2 rows below the meta data
+    ws.getRange(data.metaData.length + 2, 1, data.eventData.length, data.eventData[0].length).setValues(data.eventData)
+    SpreadsheetApp.flush()
+
+    // Space out requests
+    Utilities.sleep(60000 / UPDATES_PER_MINUTE)
+  }
 }
 
 
@@ -42,7 +55,7 @@ function main() {
  * @param {string} dateFormat Valid values are unix and iso.
  * @return {object} A dictionary containing keys for metaData and eventData, each with a value as a 2D array (tabular) for easy output to a spreadsheet. If the request fails, event_data will be null.
  */
-function getOdds(apiKey, sportKey, markets, regions, oddsFormat, dateFormat) {
+function fetchOdds(apiKey, sportKey, markets, regions, oddsFormat, dateFormat) {
   const url = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds?apiKey=${apiKey}&regions=${regions}&markets=${markets}&oddsFormat=${oddsFormat}&dateFormat=${dateFormat}`
 
   const response = UrlFetchApp.fetch(url, {

@@ -10,13 +10,13 @@ Use this guide to:
 - Customize triggers. Decide on how the data should be refreshed. For example, you can add a button anywhere in your spreadsheet to refresh odds manually, or you can set a time-driven trigger to have the data automatically refresh on a schedule. This can refresh odds even when the spreadsheet is closed.
 - Add your own code to do more complex things.
 
-Note the code sample in [Code.gs](./Code.gs) does not cover outrights markets at this time.
+Note the code sample in [Odds.gs](./Odds.gs) does not cover outrights markets at this time.
 
 ## First Time Setup
 
 - In a *new* spreadsheet, on the top tool bar, click Extensions -> Apps Script
     <img src="screenshots/start_apps_script.jpg" alt="Start Apps Script" style="display: block; max-width: 500px;" />
-- Copy and paste the code from the [Code.gs](./Code.gs) file into the Apps Script editor
+- Copy and paste the code from the [Odds.gs](./Odds.gs) file into the Apps Script editor
 - Give your project a name
     <img src="screenshots/rename_project.jpg" alt="Rename Project" style="display: block; max-width: 500px;" />
 - Set the values for `SPREADSHEET_URL` and `SHEET_NAME`, which tells the code where to output the odds data. These values can be found from the spreadsheet.
@@ -45,7 +45,7 @@ Now that we can bring odds data into a spreadsheet, we can look at ways to trigg
 - Draw & style a button, and click "Save and Close"
     <img src="screenshots/add_button_trigger.jpg" alt="Add Button Trigger" style="display: block; max-width: 500px;" />
 - Right click the button and click the 3 vertical dots, and select "Assign script"
-- Type the name of the function that updates odds, which in this case is "main" (corresponding to `function main()` in [Code.gs](./Code.gs)) & save
+- Type the name of the function that updates odds, which in this case is "getOdds" (corresponding to `function getOdds()` in [Odds.gs](./Odds.gs)) & save
     <img src="screenshots/assign_script.jpg" alt="Assign Script" style="display: block; max-width: 500px;" />
 - Click the button. Odds data should populate in the spreadsheet as configured with `SPREADSHEET_URL` and `SHEET_NAME`
 
