@@ -39,7 +39,7 @@ function getScores() {
 }
 
 /**
- * Calls v4 of The Odds API and returns odds data in a tabular structure
+ * Calls v4 of The Odds API and returns scores data in a tabular structure
  * For details, see https://the-odds-api.com/liveapi/guides/v4/#parameters-2
  *
  * @param {string} apiKey Get an API key from https://the-odds-api.com/#get-access
@@ -62,13 +62,13 @@ function fetchScores(apiKey, sportKey, daysFrom, dateFormat) {
   })  
   
   return {
-    metaData: formatResponseMetaData(response.getHeaders()),
-    eventData: formatEvents(JSON.parse(response.getContentText())),
+    metaData: formatResponseMetaDataScores(response.getHeaders()),
+    eventData: formatEventsScores(JSON.parse(response.getContentText())),
   }
 
 }
 
-function formatEvents(events) {
+function formatEventsScores(events) {
   /**
    * Restructure the JSON response into a 2D array, suitable for outputting to a spreadsheet
    */
@@ -104,7 +104,7 @@ function formatEvents(events) {
   return rows
 }
 
-function formatResponseMetaData(headers) {
+function formatResponseMetaDataScores(headers) {
   return [
     ['Requests Used', headers['x-requests-used']],
     ['Requests Remaining', headers['x-requests-remaining']],
