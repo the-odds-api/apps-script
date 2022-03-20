@@ -82,9 +82,20 @@ function formatEvents(events) {
   for (const event of events) {
     for (const bookmaker of event.bookmakers) {
       for (const market of bookmaker.markets) {
-        let outcome_home = market.outcomes.filter(outcome => outcome.name === event.home_team)[0]
-        let outcome_away = market.outcomes.filter(outcome => outcome.name === event.away_team)[0]
-        let outcome_draw = market.outcomes.filter(outcome => outcome.name === 'Draw')[0] ?? {}
+        let outcome_home
+        let outcome_away
+        let outcome_draw
+
+        if (market.key === 'totals') {
+          outcome_home = market.outcomes.filter(outcome => outcome.name === 'Over')[0]
+          outcome_away = market.outcomes.filter(outcome => outcome.name === 'Under')[0]
+          outcome_draw = {}
+        } else {
+          outcome_home = market.outcomes.filter(outcome => outcome.name === event.home_team)[0]
+          outcome_away = market.outcomes.filter(outcome => outcome.name === event.away_team)[0]
+          outcome_draw = market.outcomes.filter(outcome => outcome.name === 'Draw')[0] ?? {}
+        }
+
         rows.push([
           event.id,
           event.commence_time,
