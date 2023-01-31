@@ -68,24 +68,26 @@ function formatEvents(events) {
       'commence_time',
       'bookmaker',
       'last_update',
-      'market',
       'home_team',
-      'home_odd',
-      'home_point',
       'away_team',
-      'away_odd',
-      'away_point',
-      'draw_odd',
+      'market',
+      'label_1',
+      'odd_1',
+      'point_1',
+      'label_2',
+      'odd_2',
+      'point_2',
+      'odd_draw',
     ]
   ]
-  
+
+  let outcome_home
+  let outcome_away
+  let outcome_draw
+
   for (const event of events) {
     for (const bookmaker of event.bookmakers) {
       for (const market of bookmaker.markets) {
-        let outcome_home
-        let outcome_away
-        let outcome_draw
-
         if (market.key === 'totals') {
           outcome_home = market.outcomes.filter(outcome => outcome.name === 'Over')[0]
           outcome_away = market.outcomes.filter(outcome => outcome.name === 'Under')[0]
@@ -101,6 +103,8 @@ function formatEvents(events) {
           event.commence_time,
           bookmaker.key,
           bookmaker.last_update,
+          event.home_team,
+          event.away_team,
           market.key,
           outcome_home.name,
           outcome_home.price,
