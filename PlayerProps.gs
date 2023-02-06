@@ -37,6 +37,21 @@ function getOdds() {
     const ws = SpreadsheetApp.openByUrl(SPREADSHEET_URL).getSheetByName(SHEET_NAME)
     ws.clearContents()
   
+    // Add headers to the data
+    output.unshift([
+        'id',
+        'commence_time',
+        'bookmaker',
+        'last_update',
+        'home_team',
+        'away_team',
+        'market',
+        'label',
+        'description',
+        'price',
+        'point',
+    ])
+
     // Output meta data starting in row 1, column 1
     ws.getRange(1, 1, marketResponse.metaData.length, marketResponse.metaData[0].length).setValues(marketResponse.metaData)
   
@@ -77,22 +92,7 @@ function getOdds() {
     /**
      * Restructure the JSON response into a 2D array, suitable for outputting to a spreadsheet
      */
-    const rows = [
-      [
-        'id',
-        'commence_time',
-        'bookmaker',
-        'last_update',
-        'home_team',
-        'away_team',
-        'market',
-        'label',
-        'description',
-        'price',
-        'point',
-      ]
-    ]
-    
+    const rows = []
     for (const bookmaker of event.bookmakers) {
       for (const market of bookmaker.markets) {
         for (const outcome of market.outcomes) {
