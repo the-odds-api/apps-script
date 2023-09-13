@@ -2,6 +2,8 @@
 function getOdds() {
   /**
    * Get odds from the The Odds API and output the response to a spreadsheet.
+   * 
+   * Note this code does not handle futures (outrights) markets at this time.
    */
 
   const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/abc123/edit#gid=0' // Get this from your browser

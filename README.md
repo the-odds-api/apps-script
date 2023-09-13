@@ -10,13 +10,13 @@ Use this guide to:
 - Customize triggers. Decide on how the data should be refreshed. For example, you can add a button anywhere in your spreadsheet to refresh odds manually, or you can set a time-driven trigger to have the data automatically refresh on a schedule. This can refresh odds even when the spreadsheet is closed.
 - Add your own code to do more complex things.
 
-Note the code sample in [Odds.gs](./Odds.gs) does not cover outrights markets at this time.
-
 ## First Time Setup
 
 - In a *new* spreadsheet, on the top tool bar, click Extensions -> Apps Script
     <img src="screenshots/start_apps_script.jpg" alt="Start Apps Script" style="display: block; max-width: 500px;" />
-- Copy and paste the code from the [Odds.gs](./Odds.gs) file into the Apps Script editor
+- Copy and paste the code from one of the above files into the Apps Script editor
+    - For example, code to query current odds can be found in the [Odds.gs](./Odds.gs) file
+
 - Give your project a name
     <img src="screenshots/rename_project.jpg" alt="Rename Project" style="display: block; max-width: 500px;" />
 - Set the values for `SPREADSHEET_URL` and `SHEET_NAME`, which tells the code where to output the odds data. These values can be found from the spreadsheet.
@@ -25,7 +25,7 @@ Note the code sample in [Odds.gs](./Odds.gs) does not cover outrights markets at
     - See here for a [list of sports keys](https://the-odds-api.com/sports-odds-data/sports-apis.html). Data will only be returned if the sport is in season and listed by bookmakers.
     - For more information on each parameter, see [the docs](https://the-odds-api.com/liveapi/guides/v4/#parameters-2)
     - See here for a [description of each market](https://the-odds-api.com/sports-odds-data/betting-markets.html)
-- Once your parameters look good, save the changes (ctrl + s or cmd + s), hit the "Run" button. Note this will clear any data in the `SHEET_NAME` sheet before outputting odds data. If you want to add formulars or notes, do so in a different sheet.
+- Once your parameters are set, save the changes (ctrl + s or cmd + s), hit the "Run" button. Note this may clear any data in the `SHEET_NAME` sheet before outputting odds data. If you want to add formulas or notes, do so in a different sheet.
     <img src="screenshots/run_apps_script.jpg" alt="Run Apps Script" style="display: block; max-width: 500px;" />
 - For a first time run, this will ask for authorization. This sample code requires 2 permissions
     - Permission to access an "external service", which is simply a call to The Odds API to fetch the latest odds data
@@ -38,16 +38,18 @@ Note the code sample in [Odds.gs](./Odds.gs) does not cover outrights markets at
 
 ## Triggers
 
-Now that we can bring odds data into a spreadsheet, we can look at ways to trigger the code to run.
+Now that we can bring odds data into a spreadsheet, we can look at easier ways to trigger the code to run.
 
 ### Get odds by clicking a button
 - In the spreadsheet, click Insert -> Drawing
 - Draw & style a button, and click "Save and Close"
     <img src="screenshots/add_button_trigger.jpg" alt="Add Button Trigger" style="display: block; max-width: 500px;" />
 - Right click the button and click the 3 vertical dots, and select "Assign script"
-- Type the name of the function that updates odds, which in this case is "getOdds" (corresponding to `function getOdds()` in [Odds.gs](./Odds.gs)) & save
+- Type the name of the function that updates odds & save.
+    - For scripts that query odds, the function name is "getOdds". For example, you will see `function getOdds()` in [Odds.gs](./Odds.gs)
+    - For scripts that query scores, the function name is "getScores"
     <img src="screenshots/assign_script.jpg" alt="Assign Script" style="display: block; max-width: 500px;" />
-- Click the button. Odds data should populate in the spreadsheet as configured with `SPREADSHEET_URL` and `SHEET_NAME`
+- Click the button. Odds (or scores) data should populate in the spreadsheet as configured with `SPREADSHEET_URL` and `SHEET_NAME`
 
 ### Get odds automatically on a time-driven schedule
 
