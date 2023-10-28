@@ -13,11 +13,12 @@ function getOdds() {
   const SPORT_KEY = 'americanfootball_nfl' // For a list of sport keys, see https://the-odds-api.com/sports-odds-data/sports-apis.html
   const MARKETS = 'h2h,spreads' // Comma separated list of betting markets. Valid values are h2h, spreads & totals
   const REGIONS = 'us' // Comma separated list of bookmaker regions. Valid values are us, uk, eu and au
+  const BOOKMAKERS = '' // Optional - if specified, it overrides REGIONS. A list of comma separated bookmakers from any region. For example: draftkings,pinnacle See all bookmakers at https://the-odds-api.com/sports-odds-data/bookmaker-apis.html
   const ODDS_FORMAT = 'american' // Valid values are american and decimal.
   const DATE_FORMAT = 'iso' // Valid values are unix and iso.
 
   // Request the data from the API
-  const data = fetchOdds(API_KEY, SPORT_KEY, MARKETS, REGIONS, ODDS_FORMAT, DATE_FORMAT)
+  const data = fetchOdds(API_KEY, SPORT_KEY, MARKETS, REGIONS, BOOKMAKERS, ODDS_FORMAT, DATE_FORMAT)
 
   // Prepare the spreadsheet for the data output
   // Note this clears any existing data on the spreadsheet
@@ -44,8 +45,9 @@ function getOdds() {
  * @param {string} dateFormat Valid values are unix and iso.
  * @return {object} A dictionary containing keys for metaData and eventData, each with a value as a 2D array (tabular) for easy output to a spreadsheet. If the request fails, event_data will be null.
  */
-function fetchOdds(apiKey, sportKey, markets, regions, oddsFormat, dateFormat) {
-  const url = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds?apiKey=${apiKey}&regions=${regions}&markets=${markets}&oddsFormat=${oddsFormat}&dateFormat=${dateFormat}`
+function fetchOdds(apiKey, sportKey, markets, regions, bookmakers, oddsFormat, dateFormat) {
+  const bookmakersParam = bookmakers ? `bookmakers=${bookmakers}` : `regions=${regions}`
+  const url = `https://api.the-odds-api.com/v4/sports/${sportKey}/odds?apiKey=${apiKey}&${bookmakersParam}&markets=${markets}&oddsFormat=${oddsFormat}&dateFormat=${dateFormat}`
 
   const response = UrlFetchApp.fetch(url, {
     headers: {
