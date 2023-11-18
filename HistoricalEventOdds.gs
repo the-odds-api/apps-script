@@ -83,14 +83,15 @@ const headers = [
         SpreadsheetApp.flush()
       }
 
-      currentDate = Math.min(currentDate - (INTERVAL_MINS * 60 * 1000), (new Date(data.responseContent.previous_timestamp)).getTime())
       outputRow = outputRow + formattedResponse.length
-
-      if (data.responseContent.previous_timestamp === null) {
-        // Earlier historical data is not available
-        return;
-      }
     }
+
+    if (data.responseContent.previous_timestamp === null) {
+      // Earlier historical data is not available
+      return;
+    }
+
+    currentDate = Math.min(currentDate - (INTERVAL_MINS * 60 * 1000), (new Date(data.responseContent.previous_timestamp)).getTime())
   }
 }
 
